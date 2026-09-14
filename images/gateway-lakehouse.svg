@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" width="100%" height="100%">
+  <defs>
+    <linearGradient id="gwBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+    <linearGradient id="azureBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#0369a1" />
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="480" rx="16" fill="url(#gwBg)" />
+  <rect x="20" y="20" width="760" height="440" rx="12" fill="none" stroke="#334155" stroke-width="1.5" />
+
+  <!-- Top Bar -->
+  <rect x="35" y="35" width="730" height="45" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" />
+  <circle cx="55" cy="57" r="6" fill="#38bdf8" />
+  <circle cx="75" cy="57" r="6" fill="#0284c7" />
+  <circle cx="95" cy="57" r="6" fill="#10b981" />
+  <text x="120" y="62" font-family="'Segoe UI', Roboto, monospace" font-size="14" fill="#38bdf8" font-weight="600">On-Premises Data Gateway · Secure Hybrid Bridge to Fabric Lakehouse</text>
+  <rect x="620" y="44" width="130" height="26" rx="13" fill="url(#azureBlue)" />
+  <text x="685" y="61" font-family="'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">HYBRID TUNNEL</text>
+
+  <!-- Step 1: On-Premise PostgreSQL -->
+  <g transform="translate(45, 120)">
+    <rect width="150" height="260" rx="10" fill="#1e293b" stroke="#64748b" stroke-width="2" />
+    <text x="75" y="32" font-family="'Segoe UI', sans-serif" font-size="13" font-weight="bold" fill="#94a3b8" text-anchor="middle">ON-PREMISES</text>
+    <text x="75" y="52" font-family="sans-serif" font-size="10" fill="#64748b" text-anchor="middle">Private Local Server</text>
+    <line x1="20" y1="62" x2="130" y2="62" stroke="#334155" />
+
+    <rect x="15" y="78" width="120" height="40" rx="6" fill="#0f172a" stroke="#334155" />
+    <text x="75" y="102" font-family="sans-serif" font-size="11" fill="#e2e8f0" text-anchor="middle">PostgreSQL Server</text>
+
+    <rect x="15" y="128" width="120" height="40" rx="6" fill="#0f172a" stroke="#334155" />
+    <text x="75" y="152" font-family="sans-serif" font-size="10" fill="#38bdf8" text-anchor="middle">Inventory Snapshot</text>
+
+    <rect x="15" y="178" width="120" height="60" rx="6" fill="#0f172a" stroke="#334155" />
+    <text x="75" y="202" font-family="sans-serif" font-size="10" fill="#fbbf24" text-anchor="middle">80,000 SKUs</text>
+    <text x="75" y="222" font-family="sans-serif" font-size="9" fill="#94a3b8" text-anchor="middle">12 Regional Hubs</text>
+  </g>
+
+  <!-- Step 2: Data Gateway Tunnel -->
+  <g transform="translate(225, 120)">
+    <rect width="165" height="260" rx="10" fill="#1e293b" stroke="#0284c7" stroke-width="2" />
+    <text x="82" y="32" font-family="'Segoe UI', sans-serif" font-size="13" font-weight="bold" fill="#38bdf8" text-anchor="middle">DATA GATEWAY</text>
+    <text x="82" y="52" font-family="sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">Secure Outbound Port</text>
+    <line x1="20" y1="62" x2="145" y2="62" stroke="#334155" />
+
+    <rect x="15" y="78" width="135" height="40" rx="6" fill="#0f172a" stroke="#334155" />
+    <text x="82" y="102" font-family="sans-serif" font-size="10" fill="#38bdf8" text-anchor="middle">Encrypted Tunnel</text>
+
+    <rect x="15" y="128" width="135" height="40" rx="6" fill="#0f172a" stroke="#334155" />
+    <text x="82" y="152" font-family="sans-serif" font-size="10" fill="#e2e8f0" text-anchor="middle">Zero Public Ports</text>
+
+    <rect x="15" y="178" width="135" height="60" rx="6" fill="#0f172a" stroke="#334155" />
+    <text x="82" y="202" font-family="sans-serif" font-size="10" fill="#10b981" text-anchor="middle">Service Bus Relay</text>
+    <text x="82" y="222" font-family="sans-serif" font-size="9" fill="#94a3b8" text-anchor="middle">High Availability</text>
+  </g>
+
+  <!-- Step 3: Fabric Copy Pipeline -->
+  <g transform="translate(415, 120)">
+    <rect width="160" height="260" rx="10" fill="#1e293b" stroke="#3b82f6" stroke-width="2" />
+    <text x="80" y="32" font-family="'Segoe UI', sans-serif" font-size="13" font-weight="bold" fill="#60a5fa" text-anchor="middle">FABRIC PIPELINE</text>
+    <text x="80" y="52" font-family="sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">Copy &amp; Audit Log</text>
+    <line x1="20" y1="62" x2="140" y2="62" stroke="#334155" />
+
+    <rect x="15" y="78" width="130" height="40" rx="6" fill="#0f172a" stroke="#334155" />
+    <text x="80" y="102" font-family="sans-serif" font-size="10" fill="#60a5fa" text-anchor="middle">Copy Data Activity</text>
+
+    <rect x="15" y="128" width="130" height="40" rx="6" fill="#0f172a" stroke="#334155" />
+    <text x="80" y="152" font-family="sans-serif" font-size="10" fill="#e2e8f0" text-anchor="middle">Set Variable Audit</text>
+
+    <rect x="15" y="178" width="130" height="60" rx="6" fill="#0f172a" stroke="#334155" />
+    <text x="80" y="202" font-family="sans-serif" font-size="10" fill="#f59e0b" text-anchor="middle">On-Demand Trigger</text>
+    <text x="80" y="222" font-family="sans-serif" font-size="9" fill="#94a3b8" text-anchor="middle">Supervisor Portal</text>
+  </g>
+
+  <!-- Step 4: Fabric Lakehouse Delta -->
+  <g transform="translate(600, 120)">
+    <rect width="155" height="260" rx="10" fill="#1e293b" stroke="#10b981" stroke-width="2" />
+    <text x="77" y="32" font-family="'Segoe UI', sans-serif" font-size="13" font-weight="bold" fill="#10b981" text-anchor="middle">LAKEHOUSE</text>
+    <text x="77" y="52" font-family="sans-serif" font-size="10" fill="#94a3b8" text-anchor="middle">Delta Lake Tables</text>
+    <line x1="20" y1="62" x2="135" y2="62" stroke="#334155" />
+
+    <rect x="15" y="78" width="125" height="40" rx="6" fill="#0f172a" stroke="#334155" />
+    <text x="77" y="102" font-family="sans-serif" font-size="10" fill="#10b981" text-anchor="middle">Inventory Delta</text>
+
+    <rect x="15" y="128" width="125" height="40" rx="6" fill="#0f172a" stroke="#334155" />
+    <text x="77" y="152" font-family="sans-serif" font-size="10" fill="#38bdf8" text-anchor="middle">Audit Logs Delta</text>
+
+    <rect x="15" y="178" width="125" height="60" rx="6" fill="#0f172a" stroke="#334155" />
+    <text x="77" y="202" font-family="sans-serif" font-size="10" fill="#a78bfa" text-anchor="middle">Direct Lake Ready</text>
+    <text x="77" y="222" font-family="sans-serif" font-size="9" fill="#94a3b8" text-anchor="middle">Zero Latency BI</text>
+  </g>
+
+  <!-- Footer -->
+  <g transform="translate(45, 400)">
+    <rect width="710" height="40" rx="6" fill="#1e293b" stroke="#334155" />
+    <text x="20" y="25" font-family="monospace" font-size="12" fill="#38bdf8">On-premises Data Gateway · PostgreSQL · Fabric Data Factory · Delta Lake · Audit Trail Logging</text>
+  </g>
+</svg>
