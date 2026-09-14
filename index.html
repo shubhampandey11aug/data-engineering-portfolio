@@ -215,6 +215,114 @@
     code, pre { font-family: var(--font-mono); background: var(--bg-sidebar); border-radius: 6px; }
     pre { padding: 1.5rem; overflow-x: auto; font-size: 0.9rem; border: 1px solid var(--border-color); color: var(--text-main); margin-bottom: 1.5rem; }
 
+    /* 🖼️ MODAL GALLERY STYLES */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .gallery-item {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .gallery-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      border-color: var(--color-primary);
+    }
+    .gallery-thumb-container {
+      width: 100%;
+      height: 180px;
+      background: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+    }
+    .gallery-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .gallery-item:hover .gallery-img {
+      transform: scale(1.05);
+    }
+    .gallery-caption {
+      padding: 0.85rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      border-top: 1px solid var(--border-color);
+      background: var(--bg-card);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .gallery-caption i {
+      color: var(--color-primary);
+    }
+
+    /* 🔍 LIGHTBOX STYLES */
+    .lightbox-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 2rem;
+      flex-direction: column;
+    }
+    .lightbox-overlay.active {
+      display: flex;
+    }
+    .lightbox-content {
+      max-width: 90vw;
+      max-height: 80vh;
+      border-radius: 8px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.15);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      color: #f8fafc;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-top: 1.25rem;
+      text-align: center;
+      font-family: var(--font-body);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .lightbox-close:hover {
+      opacity: 1;
+    }
+
     @media (max-width: 992px) {
       .sidebar { transform: translateX(-100%); }
       .sidebar.open { transform: translateX(0); }
@@ -228,9 +336,9 @@
 
   <!-- 🧭 SIDEBAR -->
   <aside class="sidebar" id="sidebar">
-    <!-- ✏️ HOW TO CUSTOMIZE: Change profile image source in the img tag below -->
+    <!-- ✏️ HOW TO CUSTOMIZE: Place your profile image as images/profile.jpg (or .png) -->
     <div class="profile-avatar-container">
-      <img src="images/profile-placeholder.svg" alt="Shubham Pandey" class="profile-avatar" />
+      <img src="images/profile.jpg" alt="Shubham Pandey" class="profile-avatar" onerror="this.onerror=null; this.src='images/profile-placeholder.svg';" />
       <span class="status-indicator" title="Available for Roles"></span>
     </div>
 
@@ -246,7 +354,7 @@
     </nav>
 
     <div class="sidebar-footer">
-      <a href="resume.pdf" class="btn btn-primary" style="justify-content: center; width: 100%;"><i class="fa-solid fa-download"></i> Resume</a>
+      <a href="resume.pdf" class="btn btn-primary" style="justify-content: center; width: 100%;" download="Shubham_Pandey_Data_Engineer_Resume.pdf"><i class="fa-solid fa-download"></i> Resume</a>
       <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 0.5rem;">
         <a href="https://www.linkedin.com/in/shubhampandey08/" target="_blank" style="font-size: 1.5rem; color: var(--text-muted);"><i class="fa-brands fa-linkedin"></i></a>
         <a href="mailto:shubhampandey11aug@gmail.com" style="font-size: 1.5rem; color: var(--text-muted);"><i class="fa-solid fa-envelope"></i></a>
@@ -307,8 +415,8 @@
         <div class="hero-visual-col">
           <div class="engineer-profile-card">
             <div class="card-header-bg"></div>
-            <!-- ✏️ HOW TO CUSTOMIZE: Change profile image in the card here -->
-            <img src="images/profile-placeholder.svg" alt="Shubham Pandey" class="card-profile-pic" />
+            <!-- ✏️ HOW TO CUSTOMIZE: Place your profile picture as images/profile.jpg -->
+            <img src="images/profile.jpg" alt="Shubham Pandey" class="card-profile-pic" onerror="this.onerror=null; this.src='images/profile-placeholder.svg';" />
             <div class="card-info">
               <h3>Shubham Pandey</h3>
               <p>Data Engineer @ Enterprise Analytics</p>
@@ -364,139 +472,263 @@
           <button class="tab-btn" onclick="switchTab('architecture')"><i class="fa-solid fa-sitemap"></i> Architecture</button>
           <button class="tab-btn" onclick="switchTab('code')"><i class="fa-solid fa-code"></i> Implementation</button>
           <button class="tab-btn" onclick="switchTab('results')"><i class="fa-solid fa-chart-line"></i> Results</button>
+          <button class="tab-btn" onclick="switchTab('gallery')"><i class="fa-solid fa-images"></i> Gallery &amp; Screenshots</button>
         </div>
 
         <div class="tab-pane active" id="pane-overview"></div>
         <div class="tab-pane" id="pane-architecture"></div>
         <div class="tab-pane" id="pane-code"></div>
         <div class="tab-pane" id="pane-results"></div>
+        <div class="tab-pane" id="pane-gallery"></div>
       </div>
     </div>
   </div>
 
+  <!-- 🖼️ EXPANDED LIGHTBOX PREVIEW -->
+  <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox(event)">
+    <button class="lightbox-close" onclick="closeLightbox(event)">&times;</button>
+    <img src="" id="lightboxImg" class="lightbox-content" alt="Full Screenshot Preview" />
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
   <!-- ⚙️ JAVASCRIPT & DATA MODEL -->
   <script>
-    // ✏️ CASE STUDIES DATA MODEL: Add or edit projects here
+    // ✏️ CASE STUDIES DATA MODEL: Includes full Screenshot Galleries for all 10 projects!
     const CASE_STUDIES = [
       {
         id: 'global-listing',
         title: 'Global Listing Intelligence Pipeline',
         category: 'Fabric',
         image: 'images/listing-intelligence.svg',
+        cardImage: 'images/cs01-title.png',
         tags: ['Fabric Pipeline', 'Data Factory', 'Upsert', 'Delta Lake'],
         shortDesc: 'Automated ingestion and Silver Delta upserts for ultra-luxury real estate listings across global offices.',
         overview: '<p>Replaced manual spreadsheet consolidation with an automated, auditable Fabric pipeline ensuring no duplication or silent overwrites across London, NYC, and Dubai offices.</p>',
         architecture: '<p>Three-activity pipeline: 1) Wildcard CSV ingestion and column mapping. 2) Archive processed files. 3) Delete from landing. Decoupled raw handling from business consumption.</p>',
         code: '<pre><code>// Pseudocode for Upsert logic\nMERGE INTO Silver_Listings AS target\nUSING Bronze_Ingest AS source\nON target.property_id = source.property_id\nWHEN MATCHED THEN UPDATE SET *\nWHEN NOT MATCHED THEN INSERT *;</code></pre>',
-        results: '<p>Eliminated 24-48 hour latency. Replaced error-prone manual merges with a resilient Delta table preserving property-id level integrity.</p>'
+        results: '<p>Eliminated 24-48 hour latency. Replaced error-prone manual merges with a resilient Delta table preserving property-id level integrity.</p>',
+        gallery: [
+          { src: 'images/cs01-title.png', caption: 'Global Listing Intelligence Title & Architecture' },
+          { src: 'images/cs01-pipeline.png', caption: 'Microsoft Fabric 3-Activity Orchestration Pipeline' },
+          { src: 'images/cs01-copy-source.png', caption: 'Copy Data Activity - Multi-Office Wildcard Source' },
+          { src: 'images/cs01-copy-dest.png', caption: 'Copy Data Activity - Governed Silver Delta Destination' },
+          { src: 'images/cs01-schema-mapping.png', caption: 'Column Mapping & PII Exclusion Schema View' },
+          { src: 'images/cs01-system-constraints.png', caption: 'System Architectural Constraints & Governance' },
+          { src: 'images/cs01-archive-source.png', caption: 'Archive Activity - Processed Files Handler' },
+          { src: 'images/cs01-archive-dest.png', caption: 'Archive Storage Tier & Retention Rules' },
+          { src: 'images/cs01-landing.png', caption: 'Raw Multi-Office Landing Zone Configuration' }
+        ]
       },
       {
         id: 'logistics-watermark',
         title: 'Incremental Logistics Watermarking',
         category: 'Fabric',
         image: 'images/logistics-watermark.svg',
+        cardImage: 'images/cs02-title.png',
         tags: ['PySpark', 'Watermark State', 'Append-Only', 'JSON'],
         shortDesc: 'Built state-aware watermark ETL parsing high-velocity JSON shipping logs autonomously.',
         overview: '<p>Global Freight Forwarders faced severe SLA breaches due to manual timestamp tracking of hundreds of daily JSON carrier files. Implemented a watermark-based state persistence algorithm.</p>',
         architecture: '<p>Pipeline reads Delta watermark table for LastProcessedDate, filters net-new files objectively, appends immutable cargo tracking events (In-Transit, Delayed) without conflating history.</p>',
         code: '<pre><code># PySpark Watermark Lookup\nwatermark_df = spark.read.table("system_watermark")\nlast_run = watermark_df.collect()[0]["LastProcessedDate"]\n\n# Filter and Append\nnew_logs = spark.read.json("Files/raw/").filter(col("timestamp") > last_run)\nnew_logs.write.format("delta").mode("append").saveAsTable("ShippingLogs")</code></pre>',
-        results: '<p>Zero duplicate scans. Exact event history preserved via "Append" write mode. SLA compliance restored fully.</p>'
+        results: '<p>Zero duplicate scans. Exact event history preserved via "Append" write mode. SLA compliance restored fully.</p>',
+        gallery: [
+          { src: 'images/cs02-title.png', caption: 'Logistics Data Modernization Title Image' },
+          { src: 'images/cs02-pipeline.png', caption: 'Watermark-Driven Incremental Ingestion Pipeline' },
+          { src: 'images/cs02-notebook-table.png', caption: 'Delta Watermark Table Initialization Notebook' },
+          { src: 'images/cs02-set-watermark.png', caption: 'Dynamic State Value Persistence Notebook' },
+          { src: 'images/cs02-copy-source.png', caption: 'Copy Data Activity - Net-New JSON Feed Filter' },
+          { src: 'images/cs02-update-watermark.png', caption: 'Pipeline Settings - Watermark Advance on Success' },
+          { src: 'images/cs02-pipeline-run.png', caption: 'End-to-End Pipeline Execution Confirmation' }
+        ]
       },
       {
         id: 'workforce-lakehouse',
         title: 'Workforce Intelligence Re-Architecture',
         category: 'Fabric',
         image: 'images/workforce-lakehouse.svg',
+        cardImage: 'images/cs03-title.png',
         tags: ['Azure SQL', 'Bronze-Silver', 'Data Quality', 'PySpark'],
         shortDesc: 'End-to-End migration from Azure SQL to Fabric Lakehouse integrating PySpark data quarantine patterns.',
         overview: '<p>Migrated HR reporting pipelines from manual Azure SQL extracts. Established automated Bronze to Silver ingestion handling duplicates and negative salaries gracefully.</p>',
         architecture: '<p>Copy Activity dumps raw Azure SQL data to Bronze. PySpark Notebook filters out null/invalid ranges to Quarantine, drops exact duplicates, and saves clean core state to Silver.</p>',
         code: '<pre><code># Quarantine Logic\nquarantine_df = raw_df.filter((col("salary") < 0) | col("department").isNull())\nclean_df = raw_df.filter((col("salary") >= 0) & col("department").isNotNull()).dropDuplicates(["emp_id"])\n\nclean_df.write.mode("overwrite").saveAsTable("silver_employees")</code></pre>',
-        results: '<p>Achieved 100% row-count mathematical reconciliation validation (Bronze = Silver + Quarantine + Dropped).</p>'
+        results: '<p>Achieved 100% row-count mathematical reconciliation validation (Bronze = Silver + Quarantine + Dropped).</p>',
+        gallery: [
+          { src: 'images/cs03-title.png', caption: 'Workforce Intelligence Project Overview' },
+          { src: 'images/cs03-target-tables.png', caption: 'Target Lakehouse Schema & Medallion Tables Structure' },
+          { src: 'images/cs03-copy-source.png', caption: 'Copy Data from Azure SQL Database - Source' },
+          { src: 'images/cs03-pipeline-design.png', caption: 'Two-Stage Fabric Data Pipeline Architecture' },
+          { src: 'images/cs03-copy-dest.png', caption: 'Copy Data Destination - Bronze Lakehouse Landing' },
+          { src: 'images/cs03-bronze-table.png', caption: 'Raw Ingested Bronze Records View' },
+          { src: 'images/cs03-notebook-read.png', caption: 'PySpark Notebook - Read Bronze Delta Table' },
+          { src: 'images/cs03-quarantine-logic.png', caption: 'Quarantine Logic Implementation in PySpark' },
+          { src: 'images/cs03-filter-invalid.png', caption: 'Filter Invalid Salaries & Null Department Records' },
+          { src: 'images/cs03-drop-duplicates.png', caption: 'Deduplicate Employee Records on Business Key' },
+          { src: 'images/cs03-write-silver.png', caption: 'Persist Governed Silver Delta Table' },
+          { src: 'images/cs03-view-quarantine.png', caption: 'Quarantine Table Audit Records' },
+          { src: 'images/cs03-view-silver.png', caption: 'Curated 100% Clean Silver Employee Roster' }
+        ]
       },
       {
         id: 'financial-pyspark',
         title: 'Financial PySpark Optimization',
         category: 'Databricks',
         image: 'images/databricks-pipeline.svg',
+        cardImage: 'images/cs04-title.png',
         tags: ['PySpark', 'Databricks', 'Broadcast Joins', 'Time Travel'],
         shortDesc: 'Optimized 2-hour financial processing down to minutes using broadcast joins and Delta schema constraints.',
         overview: '<p>Resolved extreme shuffle issues on multi-million row AR aging transaction queries by enforcing memory broadcast optimization and strict Delta table schema validation.</p>',
         architecture: '<p>Leveraged Databricks PySpark to manage caching strategies, enforce schema rules on incoming flawed transaction logs, and utilize Delta Time Travel to recover from bad loads.</p>',
         code: '<pre><code>from pyspark.sql.functions import broadcast\n\n# Broadcast Join Optimization\nlarge_tx_df = spark.read.table("transactions")\nsmall_dim_df = spark.read.table("customer_master")\n\noptimized_df = large_tx_df.join(broadcast(small_dim_df), "cust_id")</code></pre>',
-        results: '<p>Processing time dropped from 2+ hours to under 6 minutes. Corrupt loads recoverable instantly via Delta restore capabilities.</p>'
+        results: '<p>Processing time dropped from 2+ hours to under 6 minutes. Corrupt loads recoverable instantly via Delta restore capabilities.</p>',
+        gallery: [
+          { src: 'images/cs04-title.png', caption: 'Financial Data Transformation Case Study Title' },
+          { src: 'images/cs04-schema.png', caption: 'Notebook Import Libraries & Strict Schema Enforcement' },
+          { src: 'images/cs04-tx-view.png', caption: 'Multi-Million Accounts Receivable Transaction Dataset' },
+          { src: 'images/cs04-physical-plan.png', caption: 'Spark Physical Execution Plan Shuffle Analysis' },
+          { src: 'images/cs04-broadcast-join.png', caption: 'BroadcastHashJoin Execution in Memory' },
+          { src: 'images/cs04-bad-data.png', caption: 'Malformed String in Numeric Currency Field Trapping' },
+          { src: 'images/cs04-time-travel-update.png', caption: 'Delta Lake Table Update & Version Increments' },
+          { src: 'images/cs04-describe-history.png', caption: 'Delta Transaction Log History Audit' },
+          { src: 'images/cs04-restore-version.png', caption: 'Instant Delta Table Time Travel Restore to Version 0' }
+        ]
       },
       {
         id: 'commerce-medallion',
         title: 'Unified Commerce Analytics Medallion',
         category: 'Fabric',
         image: 'images/commerce-medallion.svg',
+        cardImage: 'images/cs05-title.png',
         tags: ['Medallion', 'Star Schema', 'Direct Lake', 'Power BI'],
         shortDesc: 'Complete Bronze-Silver-Gold transformation delivering a zero-copy Direct Lake Power BI model.',
         overview: '<p>North Meridian Retail required a decoupled lakehouse architecture escaping a heavily normalized OLTP database. Built a full suite for E-Commerce analytics.</p>',
         architecture: '<p>Bronze: ForEach loops landing tables. Silver: Flattening and enriching values. Gold: Dimension and Fact tables implementing Surrogate Keys. Serving layer: Power BI Direct Lake.</p>',
         code: '<pre><code>// DAX Direct Lake Measure\nTotal Revenue = SUM(Fact_Sales[SalesAmount])\n\nSales YTD = TOTALYTD([Total Revenue], Dim_Date[DateKey])</code></pre>',
-        results: '<p>Replaced imported tabular models with Direct Lake zero-copy memory rendering, enabling sub-second multi-million row analytics dashboard refreshes.</p>'
+        results: '<p>Replaced imported tabular models with Direct Lake zero-copy memory rendering, enabling sub-second multi-million row analytics dashboard refreshes.</p>',
+        gallery: [
+          { src: 'images/cs05-title.png', caption: 'Unified Commerce Analytics Platform Overview' },
+          { src: 'images/cs05-architecture.png', caption: 'Bronze-Silver-Gold Medallion Data Pipeline' },
+          { src: 'images/cs05-lookup.png', caption: 'Lookup Activity - Schema Metadata Extraction' },
+          { src: 'images/cs05-foreach.png', caption: 'ForEach Loop Dynamic Table Extraction Flow' },
+          { src: 'images/cs05-foreach-copy.png', caption: 'Parameterized Copy Data Activity inside ForEach' },
+          { src: 'images/cs05-bronze-to-silver.png', caption: 'Bronze to Silver PySpark Curated Enrichment Notebook' },
+          { src: 'images/cs05-silver-view.png', caption: 'Silver Delta Customer & Sales Tables' },
+          { src: 'images/cs05-silver-to-gold.png', caption: 'Silver to Gold Star Schema Transformation' },
+          { src: 'images/cs05-gold-tables.png', caption: 'Fact_Sales and Conformed Dimensions Ready for Direct Lake' }
+        ]
       },
       {
         id: 'market-risk',
         title: 'Market Risk T-SQL JSON Shredding',
         category: 'Fabric',
         image: 'images/warehouse-sql.svg',
+        cardImage: 'images/cs06-title.png',
         tags: ['Fabric Warehouse', 'T-SQL OPENJSON', 'Stored Procs'],
         shortDesc: 'Ingested nested API feeds into structured warehouse tables using native T-SQL OPENJSON.',
         overview: '<p>Processed real-time FX API payload responses efficiently directly inside Microsoft Fabric Warehouse to drive global credit risk exposure calculations.</p>',
         architecture: '<p>API response loaded to staging. Idempotent Stored Procedure utilizes OPENJSON to shred nested properties. Implemented defensive TRY_CAST parsing to trap NULL sentinels.</p>',
         code: '<pre><code>-- T-SQL OPENJSON Shredding\nSELECT \n    TRY_CAST(j.[date] AS DATE) AS FxDate,\n    j.base,\n    TRY_CAST(r.[value] AS DECIMAL(18,4)) AS Rate\nFROM stg.ApiPayload\nCROSS APPLY OPENJSON(ResponseJson, \'$.rates\') AS r;</code></pre>',
-        results: '<p>Eradicated rigid transformation layers outside the warehouse. Guaranteed historical backfill resilience through purely idempotent T-SQL operations.</p>'
+        results: '<p>Eradicated rigid transformation layers outside the warehouse. Guaranteed historical backfill resilience through purely idempotent T-SQL operations.</p>',
+        gallery: [
+          { src: 'images/cs06-title.png', caption: 'Market Risk Intelligence Feed Title Screen' },
+          { src: 'images/cs06-create-schema.png', caption: 'Fabric Warehouse Schema & Staging Tables Setup' },
+          { src: 'images/cs06-json-parsing.png', caption: 'T-SQL OPENJSON Nested FX Rates Shredding' },
+          { src: 'images/cs06-create-sp.png', caption: 'Atomic Stored Procedure Creation with MERGE Upsert' },
+          { src: 'images/cs06-pipeline.png', caption: 'Fabric Web Activity Pipeline Calling FX Rest API' },
+          { src: 'images/cs06-pipeline-sp.png', caption: 'Pipeline Stored Procedure Invocation Activity' },
+          { src: 'images/cs06-pipeline-run.png', caption: 'Pipeline Execution and Daily Backfill Run' },
+          { src: 'images/cs06-idempotent-sp.png', caption: 'Idempotent Stored Procedure with Defensive Type Casting' }
+        ]
       },
       {
         id: 'accountability-scd',
         title: 'Hierarchy & SCD Type 2 Governance',
         category: 'Fabric',
         image: 'images/warehouse-sql.svg',
+        cardImage: 'images/cs07-title.png',
         tags: ['SCD Type 2', 'Recursive CTE', 'T-SQL Merge'],
         shortDesc: 'Maintained exact temporal history and 5-level regulatory reporting chains using recursive CTEs.',
         overview: '<p>Asset management firm mandated an airtight audit chain for relationship manager compliance changes historically without overwriting old positional mappings.</p>',
         architecture: '<p>Designed an SCD Type 2 dimension preserving historical shifts via Start/End Dates. Deployed a Recursive T-SQL CTE to dynamically compute 5-level organizational depth structures instantly.</p>',
         code: '<pre><code>-- Recursive Hierarchy Flattener\nWITH OrgChain AS (\n  SELECT RM_ID, Manager_ID, 1 AS Depth, CAST(Name AS VARCHAR(MAX)) AS Path\n  FROM ref.Managers WHERE Manager_ID IS NULL\n  UNION ALL\n  SELECT e.RM_ID, e.Manager_ID, c.Depth + 1, c.Path + \' > \' + e.Name\n  FROM ref.Managers e INNER JOIN OrgChain c ON e.Manager_ID = c.RM_ID\n)\nSELECT * FROM OrgChain;</code></pre>',
-        results: '<p>Achieved 100% regulatory compliance traceback on any historical position without complex external logic apps.</p>'
+        results: '<p>Achieved 100% regulatory compliance traceback on any historical position without complex external logic apps.</p>',
+        gallery: [
+          { src: 'images/cs07-title.png', caption: 'The Accountability Gap - Regulatory Governance Title' },
+          { src: 'images/cs07-schema-copy.png', caption: 'Warehouse Staging Tables & Flagged Positions Copy' },
+          { src: 'images/cs07-gold-view.png', caption: 'Governed Gold View with Defensive TRY_CAST and Null Handling' },
+          { src: 'images/cs07-rm-leaderboard.png', caption: 'RM Resolution Performance Ranking Query' },
+          { src: 'images/cs07-hierarchy-cte.png', caption: 'Recursive CTE Query for 5-Level Management Hierarchy' },
+          { src: 'images/cs07-hierarchy-output.png', caption: 'Flattened Reporting Depth & Accountability Chain' },
+          { src: 'images/cs07-scd2-structure.png', caption: 'SCD Type 2 Temporal Validity Columns (ValidFrom / ValidTo)' },
+          { src: 'images/cs07-scd2-merge.png', caption: 'Atomic Merge Statement for Historical Roster Sync' }
+        ]
       },
       {
         id: 'gateway-postgres',
         title: 'On-Premise Gateway Lakehouse Pivot',
         category: 'Fabric',
         image: 'images/gateway-lakehouse.svg',
+        cardImage: 'images/cs08-title.png',
         tags: ['On-Premises Gateway', 'PostgreSQL', 'Hybrid', 'Fabric'],
         shortDesc: 'Secured tunnel extracts from isolated legacy local PostgreSQL directly into Cloud Fabric Lakehouse.',
         overview: '<p>Replaced manual daily CSV extracts from a secured local inventory database by architecting a hybrid cloud integration mesh for reliable BI.</p>',
         architecture: '<p>Installed Microsoft On-Premises Data Gateway in local DMZ. Synced Data Factory Pipeline via Gateway connection to pull 80K SKU footprints into Delta format alongside strict audit trail variables.</p>',
         code: '<pre><code>-- Hybrid Connectivity established via Gateway.\n-- Copy Data Source Query Config:\nSELECT \n  SKU, Facility, Quantity, \n  CURRENT_TIMESTAMP AS ExtractedAt \nFROM inventory.snapshot_daily;</code></pre>',
-        results: '<p>Wiped out 24-36 hr delays. Automated end-to-end pull driven by pipeline supervisory triggers with 0 ports opened to the public internet.</p>'
+        results: '<p>Wiped out 24-36 hr delays. Automated end-to-end pull driven by pipeline supervisory triggers with 0 ports opened to the public internet.</p>',
+        gallery: [
+          { src: 'images/cs08-title.png', caption: 'Inventory Data Migration to Microsoft Fabric Title' },
+          { src: 'images/cs08-gateway-config.png', caption: 'On-Premises Data Gateway Encrypted Tunnel Connection' },
+          { src: 'images/cs08-postgres-table.png', caption: 'Local PostgreSQL Inventory Snapshot Table View' },
+          { src: 'images/cs08-pipeline-design.png', caption: 'Fabric Copy Data Pipeline Architecture' },
+          { src: 'images/cs08-copy-settings.png', caption: 'Copy Data Source & Lakehouse Delta Destination' },
+          { src: 'images/cs08-lakehouse-load.png', caption: 'Lakehouse Tables View with 80,000 Synchronized SKUs' },
+          { src: 'images/cs08-audit-logging.png', caption: 'Automated Pipeline Audit Trail & Execution Logging' }
+        ]
       },
       {
         id: 'dataflow-cleansing',
         title: 'Customer Data Trust Transformation',
         category: 'Fabric',
         image: 'images/dataflow-gen2.svg',
+        cardImage: 'images/cs09-title.png',
         tags: ['Dataflow Gen2', 'Power Query M', 'Customer 360'],
         shortDesc: 'Cleansed extremely disparate CRM formats via Dataflow Gen2 M scripted transformation logic.',
         overview: '<p>Unified Customer 360 profiles wrecked by unvalidated CRM ingestion paths. Delivered trustworthy analytical models correcting phones, addresses, and states.</p>',
         architecture: '<p>Used low-code Dataflow Gen2 backed by Power Query M language. Extracted digits, normalized casing, joined standard Reference mappings, and flushed to Delta Lake dynamically via Fast Copy protocols.</p>',
         code: '<pre><code>// Power Query M Phone Cleanup\nlet\n  PhoneText = Text.Trim(Text.From([Phone])),\n  DigitsOnly = Text.Select(PhoneText, {"0".."9"})\nin\n  if Text.Length(DigitsOnly) = 10 then DigitsOnly else null</code></pre>',
-        results: '<p>Ensured 100% structural fidelity on roster contact logic boosting Marketing Churn Model training efficacy by 7%.</p>'
+        results: '<p>Ensured 100% structural fidelity on roster contact logic boosting Marketing Churn Model training efficacy by 7%.</p>',
+        gallery: [
+          { src: 'images/cs09-title.png', caption: 'Customer Data Trust Transformation Title Screen' },
+          { src: 'images/cs09-bronze-customer.png', caption: 'Raw Bronze Customer Dataset with Formatting Discrepancies' },
+          { src: 'images/cs09-merge-state.png', caption: 'Dataflow Gen2 Nested Join with Reference States Table' },
+          { src: 'images/cs09-split-address.png', caption: 'Address Parsing & Suffix Normalization Transformations' },
+          { src: 'images/cs09-merge-address.png', caption: 'Standard Address Lookup Expansion' },
+          { src: 'images/cs09-phone-clean.png', caption: 'Power Query M Advanced Custom Column for 10-Digit Cleaning' },
+          { src: 'images/cs09-clean-silver.png', caption: 'Curated Customer_Silver Table Ready for Downstream CRM' }
+        ]
       },
       {
         id: 'realtime-eventhouse',
         title: 'Live Market Intelligence Eventstream',
         category: 'Fabric',
         image: 'images/realtime-eventstream.svg',
+        cardImage: 'images/cs10-title.png',
         tags: ['Eventstream', 'KQL Database', 'Activator', 'Real-Time'],
         shortDesc: 'Engineered sub-second market data routing via KQL Database Eventhouse and Activator Alerts.',
-        overview: '<p>Migrated algorithmic trading analytics from batch processing to continuous continuous sub-second tick analysis using Fabric Real-Time Intelligence.</p>',
+        overview: '<p>Migrated algorithmic trading analytics from batch processing to continuous sub-second tick analysis using Fabric Real-Time Intelligence.</p>',
         architecture: '<p>Eventstream continuous ingestion of stock tickers → KQL Database (strict typed schema, dynamic indexing) → Data Activator triggers automatic drawdown notifications to Teams organically.</p>',
         code: '<pre><code>// KQL Drawdown Detection Query\nStockTicks\n| summarize MaxPrice = max(Price) by Symbol\n| join (StockTicks | summarize CurrentPrice = arg_max(Timestamp, Price) by Symbol) on Symbol\n| extend Drawdown = (MaxPrice - CurrentPrice) / MaxPrice\n| where Drawdown > 0.05</code></pre>',
-        results: '<p>Traders received signals inside of 30 seconds rather than after 2 hours. Eliminated batch lag allowing autonomous reflexes directly inside the cloud fabric.</p>'
+        results: '<p>Traders received signals inside of 30 seconds rather than after 2 hours. Eliminated batch lag allowing autonomous reflexes directly inside the cloud fabric.</p>',
+        gallery: [
+          { src: 'images/cs10-title.png', caption: 'Live Market Intelligence Real-Time Eventstream' },
+          { src: 'images/cs10-eventhouse.png', caption: 'Fabric Workspace & Eventhouse Provisioning' },
+          { src: 'images/cs10-kql-schema.png', caption: 'KQL Database StockTicks Schema Definition' },
+          { src: 'images/cs10-eventstream.png', caption: 'Connected Fabric Eventstream Ingestion Pipe' },
+          { src: 'images/cs10-kql-queries.png', caption: 'KQL Real-Time Volatility, Returns & Anomaly Queries' },
+          { src: 'images/cs10-activator-alert.png', caption: 'Fabric Data Activator Price Drawdown Trigger Configuration' },
+          { src: 'images/cs10-audit-log.png', caption: 'Full Eventhouse Trace & Configuration Audit Trail' },
+          { src: 'images/cs10-rt-dashboard.png', caption: '30-Second Auto-Refreshing Real-Time Trading Dashboard' }
+        ]
       }
     ];
 
@@ -512,7 +744,7 @@
 
         projectGrid.innerHTML += `
           <div class="project-card">
-            <img src="${cs.image}" alt="${cs.title}" class="project-img" />
+            <img src="${cs.cardImage || cs.image}" alt="${cs.title}" class="project-img" onerror="this.onerror=null; this.src='${cs.image}';" />
             <div class="project-body">
               <div class="project-tags">${tagsHtml}</div>
               <h3 class="project-title">${cs.title}</h3>
@@ -551,6 +783,32 @@
       document.getElementById('pane-code').innerHTML = cs.code;
       document.getElementById('pane-results').innerHTML = cs.results;
 
+      // Render Gallery Pane with Click-to-Zoom Lightbox
+      const galleryPane = document.getElementById('pane-gallery');
+      if (cs.gallery && cs.gallery.length > 0) {
+        galleryPane.innerHTML = `
+          <h4 style="margin-bottom: 0.5rem;"><i class="fa-solid fa-images" style="color: var(--color-primary);"></i> Project Implementation Gallery</h4>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">Click on any screenshot to view in full resolution.</p>
+          <div class="gallery-grid">
+            ${cs.gallery.map(g => `
+              <div class="gallery-item" onclick="openLightbox('${g.src}', '${g.caption.replace(/'/g, "\\'")}', '${cs.image}')">
+                <div class="gallery-thumb-container">
+                  <img src="${g.src}" alt="${g.caption}" class="gallery-img" onerror="this.onerror=null; this.src='${cs.image}';" />
+                </div>
+                <div class="gallery-caption"><i class="fa-solid fa-camera"></i> ${g.caption}</div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else {
+        galleryPane.innerHTML = `
+          <div style="text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
+            <i class="fa-solid fa-image" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.4;"></i>
+            <p>Architecture diagrams and screenshots are available in the Architecture & Implementation tabs.</p>
+          </div>
+        `;
+      }
+
       switchTab('overview');
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -565,8 +823,30 @@
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
 
-      document.querySelector(`.tab-btn[onclick="switchTab('${tabId}')"]`).classList.add('active');
-      document.getElementById(`pane-${tabId}`).classList.add('active');
+      const activeBtn = document.querySelector(`.tab-btn[onclick="switchTab('${tabId}')"]`);
+      if (activeBtn) activeBtn.classList.add('active');
+      const activePane = document.getElementById(`pane-${tabId}`);
+      if (activePane) activePane.classList.add('active');
+    }
+
+    // Lightbox Logic
+    function openLightbox(src, caption, fallback) {
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightboxImg');
+      const lightboxCaption = document.getElementById('lightboxCaption');
+
+      lightboxImg.onerror = function() {
+        if (fallback) this.src = fallback;
+      };
+      lightboxImg.src = src;
+      lightboxCaption.textContent = caption || 'Screenshot Preview';
+      lightbox.classList.add('active');
+    }
+
+    function closeLightbox(e) {
+      if (e.target.id === 'lightbox' || e.target.classList.contains('lightbox-close')) {
+        document.getElementById('lightbox').classList.remove('active');
+      }
     }
 
     // Sidebar Mobile Toggle
@@ -583,6 +863,9 @@
       html.setAttribute('data-theme', next);
       themeBtn.innerHTML = next === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
     });
+  </script>
+</body>
+</html>
   </script>
 </body>
 </html>
