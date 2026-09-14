@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shubham Pandey | Data Engineer Portfolio</title>
+
+  <!-- 🌐 CDN FONTS & ICONS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;0,700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700&family=Source+Serif+4:ital,wght@0,400;0,600;0,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- 🎨 EMBEDDED CSS -->
+  <style>
+    :root {
+      --color-primary: #5e81ac;
+      --color-primary-hover: #4c6f99;
+      --color-primary-light: rgba(94, 129, 172, 0.12);
+
+      --bg-body: #ffffff;
+      --bg-surface: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-sidebar: #f1f5f9;
+      --bg-sidebar-hover: #e2e8f0;
+
+      --text-main: #1e293b;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+
+      --border-color: #e2e8f0;
+
+      --font-body: 'Source Sans 3', sans-serif;
+      --font-heading: 'Source Serif 4', serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --sidebar-width: 320px;
+    }
+
+    [data-theme="dark"] {
+      --bg-body: #0b1120;
+      --bg-surface: #0f172a;
+      --bg-card: #1e293b;
+      --bg-sidebar: #0f172a;
+      --bg-sidebar-hover: #1e293b;
+
+      --text-main: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+
+      --border-color: #334155;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg-body); color: var(--text-main);
+      font-family: var(--font-body); line-height: 1.6;
+      display: flex; min-height: 100vh; overflow-x: hidden;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    h1, h2, h3, h4 { font-family: var(--font-heading); color: var(--text-main); font-weight: 700; margin-bottom: 1rem; }
+    p { color: var(--text-secondary); margin-bottom: 1rem; }
+    a { color: var(--color-primary); text-decoration: none; }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed; top: 0; left: 0; bottom: 0; width: var(--sidebar-width);
+      background: var(--bg-sidebar); border-right: 1px solid var(--border-color);
+      padding: 2rem 1.5rem; display: flex; flex-direction: column; z-index: 100;
+      overflow-y: auto; transition: transform 0.3s;
+    }
+    .profile-avatar-container { text-align: center; margin-bottom: 1.5rem; position: relative; }
+    .profile-avatar { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 4px solid var(--border-color); }
+    .status-indicator {
+      position: absolute; bottom: 10px; right: 25%; width: 16px; height: 16px;
+      background: #10b981; border-radius: 50%; border: 3px solid var(--bg-sidebar);
+    }
+    .profile-name { font-size: 1.5rem; text-align: center; margin-bottom: 0.2rem; }
+    .profile-title { font-size: 0.95rem; text-align: center; color: var(--text-muted); margin-bottom: 2rem; font-weight: 600; }
+
+    .sidebar-nav ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 2rem; }
+    .sidebar-nav a {
+      display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem;
+      color: var(--text-main); border-radius: 8px; transition: 0.2s; font-weight: 600;
+      border-left: 3px solid transparent;
+    }
+    .sidebar-nav a:hover, .sidebar-nav a.active {
+      background: var(--bg-sidebar-hover); color: var(--color-primary); border-left-color: var(--color-primary);
+    }
+    .sidebar-footer { margin-top: auto; display: flex; flex-direction: column; gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; }
+
+    /* MAIN WRAPPER */
+    .main-wrapper { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); }
+
+    /* HEADER */
+    .top-header {
+      height: 70px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; border-bottom: 1px solid var(--border-color); background: var(--bg-body);
+      position: sticky; top: 0; z-index: 50;
+    }
+    .header-logo { font-family: var(--font-mono); font-weight: 700; font-size: 1.2rem; }
+    .mobile-menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-main); cursor: pointer; }
+
+    /* BROADCAST TICKER */
+    .broadcast-container {
+      background: var(--bg-surface); border-bottom: 1px solid var(--border-color);
+      overflow: hidden; padding: 0.6rem 0; white-space: nowrap; position: relative;
+    }
+    .broadcast-ticker {
+      display: inline-block; padding-left: 100%; animation: ticker 25s linear infinite;
+    }
+    @keyframes ticker { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
+    .ticker-item {
+      display: inline-flex; align-items: center; gap: 0.5rem; margin-right: 3rem;
+      font-family: var(--font-mono); font-size: 0.9rem; font-weight: 600; color: var(--text-main);
+    }
+    .ticker-item i { color: var(--color-primary); }
+
+    .content-container { padding: 3rem 2rem 5rem; max-width: 1200px; margin: 0 auto; }
+
+    /* HERO - REDESIGNED PROFILE CARD */
+    .hero-banner { display: grid; grid-template-columns: 1fr 400px; gap: 4rem; align-items: center; margin-bottom: 4rem; }
+    .hero-heading { font-size: 2.8rem; line-height: 1.2; margin-bottom: 1.5rem; }
+    .highlight { color: var(--color-primary); }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem;
+      border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; border: 1px solid transparent; text-decoration: none;
+    }
+    .btn-primary { background: var(--color-primary); color: #fff; }
+    .btn-primary:hover { background: var(--color-primary-hover); transform: translateY(-2px); }
+    .btn-outline { border-color: var(--border-color); color: var(--text-main); }
+    .btn-outline:hover { border-color: var(--color-primary); color: var(--color-primary); }
+    .hero-cta { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+
+    /* Modern Profile Card (Replaces Circular + Floating Badges) */
+    .engineer-profile-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    .engineer-profile-card:hover { border-color: var(--color-primary); transform: translateY(-5px); }
+    .card-header-bg { height: 100px; background: linear-gradient(135deg, var(--color-primary) 0%, #2c3e50 100%); }
+    .card-profile-pic {
+      width: 100px; height: 100px; border-radius: 12px; margin: -50px auto 1rem 2rem;
+      border: 4px solid var(--bg-card); background: #fff; object-fit: cover;
+    }
+    .card-info { padding: 0 2rem 2rem; }
+    .card-info h3 { margin-bottom: 0.2rem; font-size: 1.4rem; }
+    .card-info p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem; }
+    .card-specs {
+      display: flex; flex-direction: column; gap: 0.5rem;
+      padding-top: 1rem; border-top: 1px solid var(--border-color);
+      font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-main);
+    }
+    .card-specs span { display: flex; align-items: center; gap: 0.5rem; }
+    .card-specs i { color: var(--color-primary); width: 16px; }
+
+    /* PROJECTS GRID */
+    .section-title { font-size: 2rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 0.75rem; }
+    .section-title::before { content: ""; width: 8px; height: 30px; background: var(--color-primary); border-radius: 4px; }
+
+    .filters { display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .filter-btn {
+      padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--border-color);
+      background: var(--bg-surface); color: var(--text-main); cursor: pointer; font-weight: 600; font-size: 0.9rem;
+    }
+    .filter-btn.active, .filter-btn:hover { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
+
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; }
+    .project-card {
+      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;
+      overflow: hidden; display: flex; flex-direction: column; transition: 0.3s;
+    }
+    .project-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); border-color: var(--color-primary); }
+    .project-img { width: 100%; height: 180px; object-fit: cover; border-bottom: 1px solid var(--border-color); }
+    .project-body { padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+    .project-tag { font-size: 0.75rem; padding: 0.25rem 0.6rem; background: var(--color-primary-light); color: var(--color-primary); border-radius: 4px; font-weight: 700; }
+    .project-title { font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .project-desc { font-size: 0.9rem; margin-bottom: 1.5rem; flex-grow: 1; }
+    .project-footer { border-top: 1px solid var(--border-color); padding-top: 1rem; display: flex; justify-content: space-between; align-items: center; }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center;
+      z-index: 1000; opacity: 0; pointer-events: none; transition: 0.3s; padding: 2rem;
+    }
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+    .modal-content {
+      background: var(--bg-body); width: 100%; max-width: 900px; max-height: 90vh;
+      border-radius: 12px; display: flex; flex-direction: column; overflow: hidden;
+      transform: translateY(20px); transition: 0.3s;
+    }
+    .modal-overlay.active .modal-content { transform: translateY(0); }
+    .modal-header { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: var(--bg-surface); }
+    .modal-close { background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; }
+    .modal-banner { width: 100%; height: 200px; object-fit: cover; background: #1e293b; }
+    .modal-body { padding: 2rem; overflow-y: auto; flex-grow: 1; }
+    .modal-tabs { display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 1.5rem; gap: 1rem; overflow-x: auto; }
+    .tab-btn {
+      padding: 0.75rem 1rem; background: none; border: none; border-bottom: 3px solid transparent;
+      font-weight: 600; color: var(--text-muted); cursor: pointer; white-space: nowrap;
+    }
+    .tab-btn.active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    code, pre { font-family: var(--font-mono); background: var(--bg-sidebar); border-radius: 6px; }
+    pre { padding: 1.5rem; overflow-x: auto; font-size: 0.9rem; border: 1px solid var(--border-color); color: var(--text-main); margin-bottom: 1.5rem; }
+
+    @media (max-width: 992px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main-wrapper { margin-left: 0; width: 100%; }
+      .mobile-menu-toggle { display: block; }
+      .hero-banner { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🧭 SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <!-- ✏️ HOW TO CUSTOMIZE: Change profile image source in the img tag below -->
+    <div class="profile-avatar-container">
+      <img src="images/profile-placeholder.svg" alt="Shubham Pandey" class="profile-avatar" />
+      <span class="status-indicator" title="Available for Roles"></span>
+    </div>
+
+    <h1 class="profile-name">Shubham Pandey</h1>
+    <h2 class="profile-title">Data Engineer</h2>
+
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="#about" class="active"><i class="fa-solid fa-user"></i> About</a></li>
+        <li><a href="#projects"><i class="fa-solid fa-cubes"></i> Case Studies</a></li>
+        <li><a href="#contact"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="resume.pdf" class="btn btn-primary" style="justify-content: center; width: 100%;"><i class="fa-solid fa-download"></i> Resume</a>
+      <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 0.5rem;">
+        <a href="https://www.linkedin.com/in/shubhampandey08/" target="_blank" style="font-size: 1.5rem; color: var(--text-muted);"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="mailto:shubhampandey11aug@gmail.com" style="font-size: 1.5rem; color: var(--text-muted);"><i class="fa-solid fa-envelope"></i></a>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-wrapper">
+    <!-- 🔝 HEADER -->
+    <header class="top-header">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <button class="mobile-menu-toggle" id="mobileMenuBtn"><i class="fa-solid fa-bars"></i></button>
+        <div class="header-logo">SP <span style="color: var(--color-primary)">//</span> PORTFOLIO</div>
+      </div>
+      <button class="btn btn-outline" id="themeToggleBtn" style="padding: 0.4rem 0.8rem;"><i class="fa-solid fa-moon"></i></button>
+    </header>
+
+    <!-- 📢 TOOLS BROADCAST TICKER -->
+    <div class="broadcast-container">
+      <div class="broadcast-ticker">
+        <!-- Replicates for continuous loop -->
+        <span class="ticker-item"><i class="fa-solid fa-server"></i> Microsoft Fabric</span>
+        <span class="ticker-item"><i class="fa-solid fa-bolt"></i> Databricks</span>
+        <span class="ticker-item"><i class="fa-solid fa-cloud"></i> Azure</span>
+        <span class="ticker-item"><i class="fa-solid fa-chart-pie"></i> Power BI</span>
+        <span class="ticker-item"><i class="fa-solid fa-brain"></i> Generative AI</span>
+        <span class="ticker-item"><i class="fa-solid fa-database"></i> SQL Server</span>
+        <span class="ticker-item"><i class="fa-solid fa-water"></i> Delta Lake</span>
+        <span class="ticker-item"><i class="fa-brands fa-python"></i> PySpark</span>
+
+        <span class="ticker-item"><i class="fa-solid fa-server"></i> Microsoft Fabric</span>
+        <span class="ticker-item"><i class="fa-solid fa-bolt"></i> Databricks</span>
+        <span class="ticker-item"><i class="fa-solid fa-cloud"></i> Azure</span>
+        <span class="ticker-item"><i class="fa-solid fa-chart-pie"></i> Power BI</span>
+        <span class="ticker-item"><i class="fa-solid fa-brain"></i> Generative AI</span>
+      </div>
+    </div>
+
+    <main class="content-container">
+      <!-- 🚀 HERO SECTION -->
+      <section class="hero-banner" id="about">
+        <div class="hero-text-col">
+          <p style="font-family: var(--font-mono); color: var(--color-primary); font-weight: 600; margin-bottom: 0.5rem;">👋 Hello, I am Shubham Pandey</p>
+          <h1 class="hero-heading">Architecting <span class="highlight">Enterprise Data Platforms</span> &amp; Modern Analytics.</h1>
+          <p>
+            I’m a <strong>Data Engineer</strong> focused on building scalable, reliable data platforms using <strong>Microsoft Fabric, Databricks, Azure, Power BI, PySpark, SQL, and Delta Lake</strong>. I specialize in designing modern data pipelines, optimizing data processing, and transforming complex datasets into trusted, business-ready insights.
+          </p>
+          <p>
+            I enjoy solving real-world challenges across cloud deployments while continuously exploring AI technologies. I am open to Data Engineering roles, freelance projects, and consulting opportunities.
+          </p>
+          <div class="hero-cta">
+            <a href="#projects" class="btn btn-primary"><i class="fa-solid fa-cubes"></i> View Case Studies</a>
+            <a href="#contact" class="btn btn-outline"><i class="fa-solid fa-paper-plane"></i> Contact Me</a>
+          </div>
+        </div>
+
+        <!-- 🛠️ REDESIGNED PROFILE CARD -->
+        <div class="hero-visual-col">
+          <div class="engineer-profile-card">
+            <div class="card-header-bg"></div>
+            <!-- ✏️ HOW TO CUSTOMIZE: Change profile image in the card here -->
+            <img src="images/profile-placeholder.svg" alt="Shubham Pandey" class="card-profile-pic" />
+            <div class="card-info">
+              <h3>Shubham Pandey</h3>
+              <p>Data Engineer @ Enterprise Analytics</p>
+              <div class="card-specs">
+                <span><i class="fa-solid fa-location-dot"></i> Gurgaon, India</span>
+                <span><i class="fa-solid fa-envelope"></i> shubhampandey11aug@gmail.com</span>
+                <span><i class="fa-solid fa-certificate"></i> Fabric / Databricks / Azure</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 📁 PROJECTS / CASE STUDIES -->
+      <section id="projects" style="padding-top: 4rem;">
+        <h2 class="section-title">Technical Case Studies</h2>
+
+        <div class="filters">
+          <button class="filter-btn active" data-filter="all">All Projects</button>
+          <button class="filter-btn" data-filter="Fabric">Microsoft Fabric</button>
+          <button class="filter-btn" data-filter="Databricks">Databricks</button>
+          <button class="filter-btn" data-filter="GenAI">GenAI & Vector</button>
+        </div>
+
+        <div class="projects-grid" id="projectGrid">
+          <!-- Populated by JavaScript -->
+        </div>
+      </section>
+
+      <!-- 📬 CONTACT -->
+      <section id="contact" style="padding-top: 6rem;">
+        <h2 class="section-title">Let's Connect</h2>
+        <p>Whether you have a role available, a consulting project, or want to discuss modern data architectures, I'd love to chat.</p>
+        <div style="display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap;">
+          <a href="mailto:shubhampandey11aug@gmail.com" class="btn btn-primary"><i class="fa-solid fa-envelope"></i> shubhampandey11aug@gmail.com</a>
+          <a href="https://www.linkedin.com/in/shubhampandey08/" target="_blank" class="btn btn-outline"><i class="fa-brands fa-linkedin"></i> LinkedIn Profile</a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 🔍 CASE STUDY MODAL -->
+  <div class="modal-overlay" id="caseModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">Project Title</h3>
+        <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <img src="" id="modalBanner" class="modal-banner" alt="Architecture" />
+      <div class="modal-body">
+        <div class="modal-tabs">
+          <button class="tab-btn active" onclick="switchTab('overview')"><i class="fa-solid fa-circle-info"></i> Overview</button>
+          <button class="tab-btn" onclick="switchTab('architecture')"><i class="fa-solid fa-sitemap"></i> Architecture</button>
+          <button class="tab-btn" onclick="switchTab('code')"><i class="fa-solid fa-code"></i> Implementation</button>
+          <button class="tab-btn" onclick="switchTab('results')"><i class="fa-solid fa-chart-line"></i> Results</button>
+        </div>
+
+        <div class="tab-pane active" id="pane-overview"></div>
+        <div class="tab-pane" id="pane-architecture"></div>
+        <div class="tab-pane" id="pane-code"></div>
+        <div class="tab-pane" id="pane-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⚙️ JAVASCRIPT & DATA MODEL -->
+  <script>
+    // ✏️ CASE STUDIES DATA MODEL: Add or edit projects here
+    const CASE_STUDIES = [
+      {
+        id: 'global-listing',
+        title: 'Global Listing Intelligence Pipeline',
+        category: 'Fabric',
+        image: 'images/listing-intelligence.svg',
+        tags: ['Fabric Pipeline', 'Data Factory', 'Upsert', 'Delta Lake'],
+        shortDesc: 'Automated ingestion and Silver Delta upserts for ultra-luxury real estate listings across global offices.',
+        overview: '<p>Replaced manual spreadsheet consolidation with an automated, auditable Fabric pipeline ensuring no duplication or silent overwrites across London, NYC, and Dubai offices.</p>',
+        architecture: '<p>Three-activity pipeline: 1) Wildcard CSV ingestion and column mapping. 2) Archive processed files. 3) Delete from landing. Decoupled raw handling from business consumption.</p>',
+        code: '<pre><code>// Pseudocode for Upsert logic\nMERGE INTO Silver_Listings AS target\nUSING Bronze_Ingest AS source\nON target.property_id = source.property_id\nWHEN MATCHED THEN UPDATE SET *\nWHEN NOT MATCHED THEN INSERT *;</code></pre>',
+        results: '<p>Eliminated 24-48 hour latency. Replaced error-prone manual merges with a resilient Delta table preserving property-id level integrity.</p>'
+      },
+      {
+        id: 'logistics-watermark',
+        title: 'Incremental Logistics Watermarking',
+        category: 'Fabric',
+        image: 'images/logistics-watermark.svg',
+        tags: ['PySpark', 'Watermark State', 'Append-Only', 'JSON'],
+        shortDesc: 'Built state-aware watermark ETL parsing high-velocity JSON shipping logs autonomously.',
+        overview: '<p>Global Freight Forwarders faced severe SLA breaches due to manual timestamp tracking of hundreds of daily JSON carrier files. Implemented a watermark-based state persistence algorithm.</p>',
+        architecture: '<p>Pipeline reads Delta watermark table for LastProcessedDate, filters net-new files objectively, appends immutable cargo tracking events (In-Transit, Delayed) without conflating history.</p>',
+        code: '<pre><code># PySpark Watermark Lookup\nwatermark_df = spark.read.table("system_watermark")\nlast_run = watermark_df.collect()[0]["LastProcessedDate"]\n\n# Filter and Append\nnew_logs = spark.read.json("Files/raw/").filter(col("timestamp") > last_run)\nnew_logs.write.format("delta").mode("append").saveAsTable("ShippingLogs")</code></pre>',
+        results: '<p>Zero duplicate scans. Exact event history preserved via "Append" write mode. SLA compliance restored fully.</p>'
+      },
+      {
+        id: 'workforce-lakehouse',
+        title: 'Workforce Intelligence Re-Architecture',
+        category: 'Fabric',
+        image: 'images/workforce-lakehouse.svg',
+        tags: ['Azure SQL', 'Bronze-Silver', 'Data Quality', 'PySpark'],
+        shortDesc: 'End-to-End migration from Azure SQL to Fabric Lakehouse integrating PySpark data quarantine patterns.',
+        overview: '<p>Migrated HR reporting pipelines from manual Azure SQL extracts. Established automated Bronze to Silver ingestion handling duplicates and negative salaries gracefully.</p>',
+        architecture: '<p>Copy Activity dumps raw Azure SQL data to Bronze. PySpark Notebook filters out null/invalid ranges to Quarantine, drops exact duplicates, and saves clean core state to Silver.</p>',
+        code: '<pre><code># Quarantine Logic\nquarantine_df = raw_df.filter((col("salary") < 0) | col("department").isNull())\nclean_df = raw_df.filter((col("salary") >= 0) & col("department").isNotNull()).dropDuplicates(["emp_id"])\n\nclean_df.write.mode("overwrite").saveAsTable("silver_employees")</code></pre>',
+        results: '<p>Achieved 100% row-count mathematical reconciliation validation (Bronze = Silver + Quarantine + Dropped).</p>'
+      },
+      {
+        id: 'financial-pyspark',
+        title: 'Financial PySpark Optimization',
+        category: 'Databricks',
+        image: 'images/databricks-pipeline.svg',
+        tags: ['PySpark', 'Databricks', 'Broadcast Joins', 'Time Travel'],
+        shortDesc: 'Optimized 2-hour financial processing down to minutes using broadcast joins and Delta schema constraints.',
+        overview: '<p>Resolved extreme shuffle issues on multi-million row AR aging transaction queries by enforcing memory broadcast optimization and strict Delta table schema validation.</p>',
+        architecture: '<p>Leveraged Databricks PySpark to manage caching strategies, enforce schema rules on incoming flawed transaction logs, and utilize Delta Time Travel to recover from bad loads.</p>',
+        code: '<pre><code>from pyspark.sql.functions import broadcast\n\n# Broadcast Join Optimization\nlarge_tx_df = spark.read.table("transactions")\nsmall_dim_df = spark.read.table("customer_master")\n\noptimized_df = large_tx_df.join(broadcast(small_dim_df), "cust_id")</code></pre>',
+        results: '<p>Processing time dropped from 2+ hours to under 6 minutes. Corrupt loads recoverable instantly via Delta restore capabilities.</p>'
+      },
+      {
+        id: 'commerce-medallion',
+        title: 'Unified Commerce Analytics Medallion',
+        category: 'Fabric',
+        image: 'images/commerce-medallion.svg',
+        tags: ['Medallion', 'Star Schema', 'Direct Lake', 'Power BI'],
+        shortDesc: 'Complete Bronze-Silver-Gold transformation delivering a zero-copy Direct Lake Power BI model.',
+        overview: '<p>North Meridian Retail required a decoupled lakehouse architecture escaping a heavily normalized OLTP database. Built a full suite for E-Commerce analytics.</p>',
+        architecture: '<p>Bronze: ForEach loops landing tables. Silver: Flattening and enriching values. Gold: Dimension and Fact tables implementing Surrogate Keys. Serving layer: Power BI Direct Lake.</p>',
+        code: '<pre><code>// DAX Direct Lake Measure\nTotal Revenue = SUM(Fact_Sales[SalesAmount])\n\nSales YTD = TOTALYTD([Total Revenue], Dim_Date[DateKey])</code></pre>',
+        results: '<p>Replaced imported tabular models with Direct Lake zero-copy memory rendering, enabling sub-second multi-million row analytics dashboard refreshes.</p>'
+      },
+      {
+        id: 'market-risk',
+        title: 'Market Risk T-SQL JSON Shredding',
+        category: 'Fabric',
+        image: 'images/warehouse-sql.svg',
+        tags: ['Fabric Warehouse', 'T-SQL OPENJSON', 'Stored Procs'],
+        shortDesc: 'Ingested nested API feeds into structured warehouse tables using native T-SQL OPENJSON.',
+        overview: '<p>Processed real-time FX API payload responses efficiently directly inside Microsoft Fabric Warehouse to drive global credit risk exposure calculations.</p>',
+        architecture: '<p>API response loaded to staging. Idempotent Stored Procedure utilizes OPENJSON to shred nested properties. Implemented defensive TRY_CAST parsing to trap NULL sentinels.</p>',
+        code: '<pre><code>-- T-SQL OPENJSON Shredding\nSELECT \n    TRY_CAST(j.[date] AS DATE) AS FxDate,\n    j.base,\n    TRY_CAST(r.[value] AS DECIMAL(18,4)) AS Rate\nFROM stg.ApiPayload\nCROSS APPLY OPENJSON(ResponseJson, \'$.rates\') AS r;</code></pre>',
+        results: '<p>Eradicated rigid transformation layers outside the warehouse. Guaranteed historical backfill resilience through purely idempotent T-SQL operations.</p>'
+      },
+      {
+        id: 'accountability-scd',
+        title: 'Hierarchy & SCD Type 2 Governance',
+        category: 'Fabric',
+        image: 'images/warehouse-sql.svg',
+        tags: ['SCD Type 2', 'Recursive CTE', 'T-SQL Merge'],
+        shortDesc: 'Maintained exact temporal history and 5-level regulatory reporting chains using recursive CTEs.',
+        overview: '<p>Asset management firm mandated an airtight audit chain for relationship manager compliance changes historically without overwriting old positional mappings.</p>',
+        architecture: '<p>Designed an SCD Type 2 dimension preserving historical shifts via Start/End Dates. Deployed a Recursive T-SQL CTE to dynamically compute 5-level organizational depth structures instantly.</p>',
+        code: '<pre><code>-- Recursive Hierarchy Flattener\nWITH OrgChain AS (\n  SELECT RM_ID, Manager_ID, 1 AS Depth, CAST(Name AS VARCHAR(MAX)) AS Path\n  FROM ref.Managers WHERE Manager_ID IS NULL\n  UNION ALL\n  SELECT e.RM_ID, e.Manager_ID, c.Depth + 1, c.Path + \' > \' + e.Name\n  FROM ref.Managers e INNER JOIN OrgChain c ON e.Manager_ID = c.RM_ID\n)\nSELECT * FROM OrgChain;</code></pre>',
+        results: '<p>Achieved 100% regulatory compliance traceback on any historical position without complex external logic apps.</p>'
+      },
+      {
+        id: 'gateway-postgres',
+        title: 'On-Premise Gateway Lakehouse Pivot',
+        category: 'Fabric',
+        image: 'images/gateway-lakehouse.svg',
+        tags: ['On-Premises Gateway', 'PostgreSQL', 'Hybrid', 'Fabric'],
+        shortDesc: 'Secured tunnel extracts from isolated legacy local PostgreSQL directly into Cloud Fabric Lakehouse.',
+        overview: '<p>Replaced manual daily CSV extracts from a secured local inventory database by architecting a hybrid cloud integration mesh for reliable BI.</p>',
+        architecture: '<p>Installed Microsoft On-Premises Data Gateway in local DMZ. Synced Data Factory Pipeline via Gateway connection to pull 80K SKU footprints into Delta format alongside strict audit trail variables.</p>',
+        code: '<pre><code>-- Hybrid Connectivity established via Gateway.\n-- Copy Data Source Query Config:\nSELECT \n  SKU, Facility, Quantity, \n  CURRENT_TIMESTAMP AS ExtractedAt \nFROM inventory.snapshot_daily;</code></pre>',
+        results: '<p>Wiped out 24-36 hr delays. Automated end-to-end pull driven by pipeline supervisory triggers with 0 ports opened to the public internet.</p>'
+      },
+      {
+        id: 'dataflow-cleansing',
+        title: 'Customer Data Trust Transformation',
+        category: 'Fabric',
+        image: 'images/dataflow-gen2.svg',
+        tags: ['Dataflow Gen2', 'Power Query M', 'Customer 360'],
+        shortDesc: 'Cleansed extremely disparate CRM formats via Dataflow Gen2 M scripted transformation logic.',
+        overview: '<p>Unified Customer 360 profiles wrecked by unvalidated CRM ingestion paths. Delivered trustworthy analytical models correcting phones, addresses, and states.</p>',
+        architecture: '<p>Used low-code Dataflow Gen2 backed by Power Query M language. Extracted digits, normalized casing, joined standard Reference mappings, and flushed to Delta Lake dynamically via Fast Copy protocols.</p>',
+        code: '<pre><code>// Power Query M Phone Cleanup\nlet\n  PhoneText = Text.Trim(Text.From([Phone])),\n  DigitsOnly = Text.Select(PhoneText, {"0".."9"})\nin\n  if Text.Length(DigitsOnly) = 10 then DigitsOnly else null</code></pre>',
+        results: '<p>Ensured 100% structural fidelity on roster contact logic boosting Marketing Churn Model training efficacy by 7%.</p>'
+      },
+      {
+        id: 'realtime-eventhouse',
+        title: 'Live Market Intelligence Eventstream',
+        category: 'Fabric',
+        image: 'images/realtime-eventstream.svg',
+        tags: ['Eventstream', 'KQL Database', 'Activator', 'Real-Time'],
+        shortDesc: 'Engineered sub-second market data routing via KQL Database Eventhouse and Activator Alerts.',
+        overview: '<p>Migrated algorithmic trading analytics from batch processing to continuous continuous sub-second tick analysis using Fabric Real-Time Intelligence.</p>',
+        architecture: '<p>Eventstream continuous ingestion of stock tickers → KQL Database (strict typed schema, dynamic indexing) → Data Activator triggers automatic drawdown notifications to Teams organically.</p>',
+        code: '<pre><code>// KQL Drawdown Detection Query\nStockTicks\n| summarize MaxPrice = max(Price) by Symbol\n| join (StockTicks | summarize CurrentPrice = arg_max(Timestamp, Price) by Symbol) on Symbol\n| extend Drawdown = (MaxPrice - CurrentPrice) / MaxPrice\n| where Drawdown > 0.05</code></pre>',
+        results: '<p>Traders received signals inside of 30 seconds rather than after 2 hours. Eliminated batch lag allowing autonomous reflexes directly inside the cloud fabric.</p>'
+      }
+    ];
+
+    // Initialize Grid
+    const projectGrid = document.getElementById('projectGrid');
+
+    function renderProjects(filter = 'all') {
+      projectGrid.innerHTML = '';
+      const filtered = CASE_STUDIES.filter(cs => filter === 'all' || cs.category === filter || cs.tags.includes(filter));
+
+      filtered.forEach(cs => {
+        const tagsHtml = cs.tags.slice(0, 3).map(tag => `<span class="project-tag">${tag}</span>`).join('');
+
+        projectGrid.innerHTML += `
+          <div class="project-card">
+            <img src="${cs.image}" alt="${cs.title}" class="project-img" />
+            <div class="project-body">
+              <div class="project-tags">${tagsHtml}</div>
+              <h3 class="project-title">${cs.title}</h3>
+              <p class="project-desc">${cs.shortDesc}</p>
+              <div class="project-footer">
+                <button class="btn btn-primary" onclick="openModal('${cs.id}')" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">View Details</button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    renderProjects();
+
+    // Filter Buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        renderProjects(e.target.dataset.filter);
+      });
+    });
+
+    // Modal Logic
+    const modal = document.getElementById('caseModal');
+    function openModal(id) {
+      const cs = CASE_STUDIES.find(p => p.id === id);
+      if (!cs) return;
+
+      document.getElementById('modalTitle').textContent = cs.title;
+      document.getElementById('modalBanner').src = cs.image;
+
+      document.getElementById('pane-overview').innerHTML = cs.overview;
+      document.getElementById('pane-architecture').innerHTML = cs.architecture;
+      document.getElementById('pane-code').innerHTML = cs.code;
+      document.getElementById('pane-results').innerHTML = cs.results;
+
+      switchTab('overview');
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+
+      document.querySelector(`.tab-btn[onclick="switchTab('${tabId}')"]`).classList.add('active');
+      document.getElementById(`pane-${tabId}`).classList.add('active');
+    }
+
+    // Sidebar Mobile Toggle
+    document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+      document.getElementById('sidebar').classList.toggle('open');
+    });
+
+    // Theme Switcher
+    const themeBtn = document.getElementById('themeToggleBtn');
+    themeBtn.addEventListener('click', () => {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      themeBtn.innerHTML = next === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+    });
+  </script>
+</body>
+</html>
